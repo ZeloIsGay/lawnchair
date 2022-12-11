@@ -1717,6 +1717,12 @@ public class QuickstepTransitionManager implements OnDeviceProfileChangeListener
         public void onAnimationCancelled() {
             mOnEndCallback.executeAllAndDestroy();
         }
+
+        // Fixed crash after changing wallpie
+        //java.lang.AbstractMethodError: abstract method "void android.view.IRemoteAnimationRunner.onAnimationCancelled(boolean)"
+        public void onAnimationCancelled(boolean isAnimate) {
+            mOnEndCallback.executeAllAndDestroy();
+        }
     }
 
     /**
