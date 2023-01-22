@@ -28,7 +28,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Insets;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.IBinder.DeathRecipient;
@@ -60,7 +59,6 @@ import com.android.wm.shell.startingsurface.IStartingWindowListener;
 import com.android.wm.shell.transition.IShellTransitions;
 import com.android.wm.shell.util.GroupedRecentTaskInfo;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -673,17 +671,6 @@ public class SystemUiProxy implements ISystemUiProxy,
             RemoteAnimationTarget[] apps) {
         if (mSplitScreen != null) {
             try {
-                if(Build.VERSION.SDK_INT == 33){
-                    try{
-                        Class<ISplitScreen> c = ISplitScreen.class;
-                        Method methods = ISplitScreen.class.getDeclaredMethod ("onGoingToRecentsLegacy", RemoteAnimationTarget[].class);
-                        return (RemoteAnimationTarget[]) methods.invoke (c, apps);
-                    }catch (Exception err){
-//                        return mSplitScreen.onGoingToRecentsLegacy (apps);
-                        return null;
-                    }
-                }
-
                 return mSplitScreen.onGoingToRecentsLegacy(cancel, apps);
             } catch (RemoteException e) {
                 Log.w(TAG, "Failed call onGoingToRecentsLegacy");

@@ -22,7 +22,6 @@ import static android.app.WindowConfiguration.WINDOWING_MODE_SPLIT_SCREEN_SECOND
 
 import android.app.ActivityOptions;
 import android.content.Context;
-import android.os.Build;
 import android.os.Handler;
 
 import com.android.systemui.shared.QuickstepCompat;
@@ -99,15 +98,6 @@ public abstract class ActivityOptionsCompat {
         return ActivityOptions.makeCustomTaskAnimation(context, enterResId, exitResId,
                 callbackHandler,
                 new ActivityOptions.OnAnimationStartedListener() {
-
-                    // Fixed Switching apps without going to recent
-                    // java.lang.AbstractMethodError: abstract method "void android.app.ActivityOptions$OnAnimationStartedListener.onAnimationStarted(long)"
-                    public void onAnimationStarted(long elapsedRealTime) {
-                        if (callback != null) {
-                            callbackHandler.post(callback);
-                        }
-                    }
-
                     @Override
                     public void onAnimationStarted() {
                         if (callback != null) {

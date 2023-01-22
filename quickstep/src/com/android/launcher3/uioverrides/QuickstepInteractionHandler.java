@@ -22,7 +22,6 @@ import android.app.ActivityTaskManager;
 import android.app.IActivityTaskManagerHidden;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -89,9 +88,7 @@ class QuickstepInteractionHandler implements RemoteViews.InteractionHandler {
             }
         }
         activityOptions.options.setPendingIntentLaunchFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if(Build.VERSION.SDK_INT != 33){
-            activityOptions.options.setSplashscreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_EMPTY);
-        }
+        activityOptions.options.setSplashscreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_EMPTY);
         options = Pair.create(options.first, activityOptions.options);
         if (pendingIntent.isActivity()) {
             logAppLaunch(itemInfo);

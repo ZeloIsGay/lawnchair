@@ -37,7 +37,6 @@ import android.content.IntentSender;
 import android.graphics.Insets;
 import android.hardware.SensorManager;
 import android.hardware.devicestate.DeviceStateManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CancellationSignal;
 import android.os.IBinder;
@@ -511,7 +510,7 @@ public abstract class BaseQuickstepLauncher extends Launcher
             ActivityOptionsCompat.setLauncherSourceInfo(
                     activityOptions.options, mLastTouchUpTime);
         }
-        if (Build.VERSION.SDK_INT < 33 && LawnchairApp.isRecentsEnabled()) {
+        if (Utilities.ATLEAST_S && LawnchairApp.isRecentsEnabled()) {
             activityOptions.options.setSplashscreenStyle(SplashScreen.SPLASH_SCREEN_STYLE_ICON);
             addLaunchCookie(item, activityOptions.options);
         }

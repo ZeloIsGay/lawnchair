@@ -17,8 +17,6 @@ package com.android.quickstep.util;
 
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
 
-import android.content.pm.PackageManager;
-
 import androidx.annotation.UiThread;
 import androidx.annotation.WorkerThread;
 
@@ -34,21 +32,15 @@ public abstract class CancellableTask<T> implements Runnable {
         if (mCancelled) {
             return;
         }
-        T result = null;
-        try {
-            result = getResultOnBg();
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace ( );
-        }
+        T result = getResultOnBg();
         if (mCancelled) {
             return;
         }
-        T finalResult = result;
         MAIN_EXECUTOR.execute(() -> {
             if (mCancelled) {
                 return;
             }
-            handleResult(finalResult);
+            handleResult(result);
         });
     }
 
@@ -57,7 +49,7 @@ public abstract class CancellableTask<T> implements Runnable {
      * {@link #handleResult(Object)}
      */
     @WorkerThread
-    public abstract T getResultOnBg() throws PackageManager.NameNotFoundException;
+    public abstract T getResultOnBg();
 
     /**
      * Called on the UI thread to handle the final result.

@@ -41,7 +41,7 @@ public class SurfaceTransactionApplier extends ReleaseCheck {
 
     private static final int MSG_UPDATE_SEQUENCE_NUMBER = 0;
 
-    private SurfaceControl mBarrierSurfaceControl;
+    private final SurfaceControl mBarrierSurfaceControl;
     private final ViewRootImpl mTargetViewRootImpl;
     private final Handler mApplyHandler;
 
@@ -52,9 +52,7 @@ public class SurfaceTransactionApplier extends ReleaseCheck {
      */
     public SurfaceTransactionApplier(View targetView) {
         mTargetViewRootImpl = targetView.getViewRootImpl();
-        if(mTargetViewRootImpl != null){
-            mBarrierSurfaceControl = mTargetViewRootImpl.getSurfaceControl();
-        }
+        mBarrierSurfaceControl = mTargetViewRootImpl.getSurfaceControl();
         mApplyHandler = new Handler(this::onApplyMessage);
     }
 
