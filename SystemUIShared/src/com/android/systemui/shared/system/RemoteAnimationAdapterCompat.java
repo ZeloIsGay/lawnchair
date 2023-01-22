@@ -108,12 +108,6 @@ public class RemoteAnimationAdapterCompat {
             public void onAnimationCancelled() {
                 remoteAnimationAdapter.onAnimationCancelled();
             }
-
-            // Fixed crash after changing wallpie
-            //java.lang.AbstractMethodError: abstract method "void android.view.IRemoteAnimationRunner.onAnimationCancelled(boolean)"
-            public void onAnimationCancelled(boolean isAnimate) {
-                remoteAnimationAdapter.onAnimationCancelled();
-            }
         };
     }
 

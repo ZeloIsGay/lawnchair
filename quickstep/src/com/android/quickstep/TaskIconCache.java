@@ -107,7 +107,7 @@ public class TaskIconCache implements DisplayInfoChangeListener {
         }
         CancellableTask<TaskCacheEntry> request = new CancellableTask<TaskCacheEntry>() {
             @Override
-            public TaskCacheEntry getResultOnBg() throws PackageManager.NameNotFoundException {
+            public TaskCacheEntry getResultOnBg() {
                 return getCacheEntry(task);
             }
 
@@ -139,7 +139,7 @@ public class TaskIconCache implements DisplayInfoChangeListener {
     }
 
     @WorkerThread
-    private TaskCacheEntry getCacheEntry(Task task) throws PackageManager.NameNotFoundException{
+    private TaskCacheEntry getCacheEntry(Task task) {
         TaskCacheEntry entry = mIconCache.getAndInvalidateIfModified(task.key);
         if (entry != null) {
             return entry;
@@ -155,9 +155,6 @@ public class TaskIconCache implements DisplayInfoChangeListener {
         // Load icon
         // TODO: Load icon resource (b/143363444)
         Bitmap icon = TaskDescriptionCompat.getIcon(desc, key.userId);
-
-        PackageManager pm = mContext.getPackageManager();
-
         if (icon != null && TaskIconUtils.allowCustomIcon(task)) {
             /* isInstantApp */
             entry.icon = getBitmapInfo(
@@ -166,7 +163,8 @@ public class TaskIconCache implements DisplayInfoChangeListener {
                     desc.getPrimaryColor(),
                     false /* isInstantApp */).newIcon(mContext);
         } else {
-            activityInfo = pm.getActivityInfo (key.getComponent (), PackageManager.GET_META_DATA);
+            activityInfo = PackageManagerWrapper.getInstance().getActivityInfo(
+                    key.getComponent(), key.userId);
             if (activityInfo != null) {
                 BitmapInfo bitmapInfo = getBitmapInfo(
                         mIconProvider.getIcon(activityInfo),
@@ -183,7 +181,8 @@ public class TaskIconCache implements DisplayInfoChangeListener {
         if (GO_LOW_RAM_RECENTS_ENABLED || mAccessibilityManager.isEnabled()) {
             // Skip loading the content description if the activity no longer exists
             if (activityInfo == null) {
-                activityInfo = pm.getActivityInfo (key.getComponent (), PackageManager.GET_META_DATA);
+                activityInfo = PackageManagerWrapper.getInstance().getActivityInfo(
+                        key.getComponent(), key.userId);
             }
             if (activityInfo != null) {
                 entry.contentDescription = getBadgedContentDescription(
